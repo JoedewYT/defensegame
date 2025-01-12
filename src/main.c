@@ -34,7 +34,8 @@ int disp_info() {
 }
 
 int init() {
-    system("clear");
+    // just as a note this first printf clears the screen (it's not very obvious, hence the note)
+    printf("\e[1;1H\e[2J");
     printf("===DEFENSE GAME===\n\n");
     disp_info();
 
@@ -44,7 +45,7 @@ int init() {
 int handle_cmd(char *cmd, bool *running) {
     if(strcmp(cmd, "quit") == 0) {
         *running = false;
-        system("clear");
+        printf("\e[1;1H\e[2J");
     } else if(strcmp(cmd, "clear") == 0) {
         init();
     } else if(strcmp(cmd, "info") == 0) {
