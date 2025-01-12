@@ -7,9 +7,29 @@ const int DAY_CYCLES = 5;
 int cycles = 0;
 int days = 0;
 
-int disp_info() {
-    printf("INFO:\n cycles: %d\n days: %d\n\n", cycles, days);
+struct Cannon_Struct
+{
+    int pitch;
+    int yaw;
+    int motor_health;
+    int laser_health;
+    int cooler_health;
+};
+struct Cannon_Struct cannon = {0,0,100,100,100};
 
+int disp_info() {
+    printf("INFO:\n");
+    printf(" - general -\n");
+    printf(" cycles: %d\n", cycles);
+    printf(" days: %d\n", days);
+    printf("\n");
+    printf(" - cannon info -\n");
+    printf(" cannon pitch: %d\n", cannon.pitch);
+    printf(" cannon yaw: %d\n", cannon.yaw);
+    printf(" cannon motor health: %d\n", cannon.motor_health);
+    printf(" cannon laser health: %d\n", cannon.laser_health);
+    printf(" cannon cooler health: %d\n", cannon.cooler_health);
+    printf("\n");
     return 0;
 }
 
@@ -42,6 +62,7 @@ int handle_cmd(char *cmd, bool *running) {
 int main() {
     bool running = true;
     char cmd[20];
+
     init(cycles);
     while(running) {
         if (cycles == DAY_CYCLES) {
@@ -54,6 +75,7 @@ int main() {
         /* this is commented out because cycles should only increase on commands that matter, not on simple stuff like "clear", "info", "help", etc*/
         //cycles++;
     }
+
     return 0;
 }
 

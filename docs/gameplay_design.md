@@ -6,4 +6,4 @@
 - [ ] method of target location
 - [ ] randomly generated targets
 - [ ] minigame for locating targets precisely (similar maybe to breach protocols in cp2077)
-- [ ] cycles (increase after every meaningful command) to introduce a bit of time management.
+- [x] cycles (increase after every meaningful command) to introduce a bit of time management.
