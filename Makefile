@@ -1,9 +1,9 @@
 build:
-	gcc src/main.c -o build/defensegame.exe
+	gcc src/main.c -o build/defensegame
 
 run:
-	gcc src/main.c -o build/defensegame.exe
-	./build/defensegame.exe
+	gcc src/main.c -o build/defensegame
+	./build/defensegame
 
 clean:
-	rm build/*
+	rm -rf build/*
