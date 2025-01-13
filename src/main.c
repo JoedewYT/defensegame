@@ -33,6 +33,18 @@ int disp_info() {
     return 0;
 }
 
+int disp_help() {
+    printf("AVAILABLE COMMANDS:\n");
+    printf(" help - displays this help screen\n");
+    printf(" clear - clears the screen\n");
+    printf(" quit - quits the game\n");
+    printf(" info - displays important info\n");
+    printf(" pitch - adjust cannon pitch\n");
+    printf(" yaw - adjust cannon yaw\n");
+    printf("\n");
+    return 0;
+}
+
 int init() {
     // just as a note this first printf clears the screen (it's not very obvious, hence the note)
     printf("\e[1;1H\e[2J");
@@ -50,13 +62,24 @@ int handle_cmd(char *cmd, bool *running) {
         init();
     } else if(strcmp(cmd, "info") == 0) {
         disp_info();
-    } else if (strcmp(cmd, "help") == 0) {
-        printf("AVAILABLE COMMANDS:\n");
-        printf(" help - displays this screen\n clear - clears the screen\n quit - quits the game\n info - displays info about game\n\n");
+    } else if(strcmp(cmd, "pitch") == 0) {
+        printf("current pitch: %d\n", cannon.pitch);
+        printf("new pitch: ");
+        scanf("%d", &cannon.pitch);
+        printf("OK\n\n");
+        cycles++;
+    } else if(strcmp(cmd, "yaw") == 0) {
+        printf("current yaw: %d\n", cannon.yaw);
+        printf("new yaw: ");
+        scanf("%d", &cannon.yaw);
+        printf("OK\n\n");
+        cycles++;
+    } else if(strcmp(cmd, "help") == 0) {
+        disp_help();
     } else {
         printf("INVALID COMMAND!\n\n");
     }
-    
+
     return 0;
 }
 
@@ -73,8 +96,6 @@ int main() {
         printf("#: ");
         scanf("%19s", &cmd);
         handle_cmd(cmd, &running);
-        /* this is commented out because cycles should only increase on commands that matter, not on simple stuff like "clear", "info", "help", etc*/
-        //cycles++;
     }
 
     return 0;
