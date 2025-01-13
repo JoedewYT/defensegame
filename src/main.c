@@ -4,18 +4,25 @@
 #include <string.h>
 
 const int DAY_CYCLES = 5;
+const int CANNON_MAX_HEALTH = 100;
 int cycles = 0;
 int days = 0;
 
-struct Cannon_Struct
-{
+struct Cannon {
     int pitch;
     int yaw;
     int motor_health;
     int laser_health;
-    int cooler_health;
+    int electronics_health;
 };
-struct Cannon_Struct cannon = {0,0,100,100,100};
+struct Cannon cannon = {0,0,100,100,100};
+
+struct Target {
+    int required_pitch;
+    int required_yaw;
+    int impact_time;
+    int difficulty;
+}
 
 int disp_info() {
     printf("INFO:\n");
@@ -28,7 +35,7 @@ int disp_info() {
     printf(" cannon yaw: %d\n", cannon.yaw);
     printf(" cannon motor health: %d\n", cannon.motor_health);
     printf(" cannon laser health: %d\n", cannon.laser_health);
-    printf(" cannon cooler health: %d\n", cannon.cooler_health);
+    printf(" cannon electronics health: %d\n", cannon.electronics_health);
     printf("\n");
     return 0;
 }
@@ -42,6 +49,26 @@ int disp_help() {
     printf(" pitch - adjust cannon pitch\n");
     printf(" yaw - adjust cannon yaw\n");
     printf("\n");
+    return 0;
+}
+
+int adjust_pitch() {
+    printf("current pitch: %d\n", cannon.pitch);
+    printf("new pitch: ");
+    scanf("%d", &cannon.pitch);
+    printf("OK\n\n");
+    cycles++;
+
+    return 0;
+}
+
+int adjust_yaw() {
+    printf("current yaw: %d\n", cannon.yaw);
+    printf("new yaw: ");
+    scanf("%d", &cannon.yaw);
+    printf("OK\n\n");
+    cycles++;
+
     return 0;
 }
 
@@ -63,17 +90,9 @@ int handle_cmd(char *cmd, bool *running) {
     } else if(strcmp(cmd, "info") == 0) {
         disp_info();
     } else if(strcmp(cmd, "pitch") == 0) {
-        printf("current pitch: %d\n", cannon.pitch);
-        printf("new pitch: ");
-        scanf("%d", &cannon.pitch);
-        printf("OK\n\n");
-        cycles++;
+        adjust_pitch();
     } else if(strcmp(cmd, "yaw") == 0) {
-        printf("current yaw: %d\n", cannon.yaw);
-        printf("new yaw: ");
-        scanf("%d", &cannon.yaw);
-        printf("OK\n\n");
-        cycles++;
+        adjust_yaw();
     } else if(strcmp(cmd, "help") == 0) {
         disp_help();
     } else {
