@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 
-#define MAX_ENEMIES 20
-#define DAY_CYCLES 5
+#define MAX_TARGETS 20
+#define DAY_CYCLES 999
 #define CANNON_MAX_HEALTH 100
+int current_targets = 0;
 int cycles = 0;
 int days = 0;
 
@@ -24,10 +26,10 @@ struct Target {
     int impact_time;
     int difficulty;
 };
-struct Target* targets[MAX_ENEMIES];
+struct Target* targets[MAX_TARGETS];
 
 void create_target(int index, int required_pitch, int required_yaw, int impact_time, int difficulty) {
-    if (index < MAX_ENEMIES) {
+    if (index < MAX_TARGETS) {
         targets[index] = (struct Target*)malloc(sizeof(struct Target));
 
         if (targets[index] != NULL) {
@@ -36,6 +38,33 @@ void create_target(int index, int required_pitch, int required_yaw, int impact_t
             targets[index]->impact_time = impact_time;
             targets[index]->difficulty = difficulty;
         }
+        current_targets++;
+    }
+    return;
+}
+
+void create_new_random_target_set(int amount) {
+    int i;
+    for (i = 0; i<MAX_TARGETS; i++) {
+        if (targets[i] != NULL) {
+            free(targets[i]);
+        }
+    }
+    current_targets = 0;
+    for (i = 0; i<amount; i++) {
+        create_target(i, rand()%361 - 180, rand()%361 - 180, rand()%40 + 10, rand()%5 + 1);
+    }
+    return;
+}
+
+void display_targets() {
+    int i;
+    for (i = 0; i<current_targets; i++) {
+        printf("TARGET %d:\n", i);
+        printf("required pitch: %d\n", targets[i]->required_pitch);
+        printf("required yaw: %d\n", targets[i]->required_yaw);
+        printf("impact time: %d\n", targets[i]->impact_time);
+        printf("difficulty: %d\n\n", targets[i]->difficulty);
     }
     return;
 }
@@ -118,7 +147,11 @@ void main() {
     bool running = true;
     char cmd[20];
 
+    srand(time(NULL));
     init(cycles);
+    create_new_random_target_set(3);
+    display_targets();
+
     while(running) {
         if (cycles == DAY_CYCLES) {
             cycles = 0;

@@ -4,7 +4,7 @@
 - [ ] Market
     - [ ] currency/economy
 - [ ] cannon health
-- [ ] randomly generated targets
+- [x] randomly generated targets
 - [ ] target location minigame
 - [x] cycles
 - [x] cannon movement
