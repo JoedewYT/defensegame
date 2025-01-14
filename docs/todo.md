@@ -7,5 +7,8 @@
 - [x] randomly generated targets
 - [ ] target location minigame
 - [x] cycles
-- [x] cannon movement
+- [ ] cannon
+    - [x] cannon movement
+    - [ ] cannon shooting
+    - [ ] cannon reloading
 - [x] command interface
