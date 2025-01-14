@@ -3,8 +3,9 @@
 #include <stdbool.h>
 #include <string.h>
 
-const int DAY_CYCLES = 5;
-const int CANNON_MAX_HEALTH = 100;
+#define MAX_ENEMIES 20
+#define DAY_CYCLES 5
+#define CANNON_MAX_HEALTH 100
 int cycles = 0;
 int days = 0;
 
@@ -22,9 +23,24 @@ struct Target {
     int required_yaw;
     int impact_time;
     int difficulty;
+};
+struct Target* targets[MAX_ENEMIES];
+
+void create_target(int index, int required_pitch, int required_yaw, int impact_time, int difficulty) {
+    if (index < MAX_ENEMIES) {
+        targets[index] = (struct Target*)malloc(sizeof(struct Target));
+
+        if (targets[index] != NULL) {
+            targets[index]->required_pitch = required_pitch;
+            targets[index]->required_yaw = required_yaw;
+            targets[index]->impact_time = impact_time;
+            targets[index]->difficulty = difficulty;
+        }
+    }
+    return;
 }
 
-int disp_info() {
+void disp_info() {
     printf("INFO:\n");
     printf(" - general -\n");
     printf(" cycles: %d\n", cycles);
@@ -37,10 +53,10 @@ int disp_info() {
     printf(" cannon laser health: %d\n", cannon.laser_health);
     printf(" cannon electronics health: %d\n", cannon.electronics_health);
     printf("\n");
-    return 0;
+    return;
 }
 
-int disp_help() {
+void disp_help() {
     printf("AVAILABLE COMMANDS:\n");
     printf(" help - displays this help screen\n");
     printf(" clear - clears the screen\n");
@@ -49,39 +65,36 @@ int disp_help() {
     printf(" pitch - adjust cannon pitch\n");
     printf(" yaw - adjust cannon yaw\n");
     printf("\n");
-    return 0;
+    return;
 }
 
-int adjust_pitch() {
+void adjust_pitch() {
     printf("current pitch: %d\n", cannon.pitch);
     printf("new pitch: ");
     scanf("%d", &cannon.pitch);
     printf("OK\n\n");
     cycles++;
-
-    return 0;
+    return;
 }
 
-int adjust_yaw() {
+void adjust_yaw() {
     printf("current yaw: %d\n", cannon.yaw);
     printf("new yaw: ");
     scanf("%d", &cannon.yaw);
     printf("OK\n\n");
     cycles++;
-
-    return 0;
+    return;
 }
 
-int init() {
+void init() {
     // just as a note this first printf clears the screen (it's not very obvious, hence the note)
     printf("\e[1;1H\e[2J");
     printf("===DEFENSE GAME===\n\n");
     disp_info();
-
-    return 0;
+    return;
 }
 
-int handle_cmd(char *cmd, bool *running) {
+void handle_cmd(char *cmd, bool *running) {
     if(strcmp(cmd, "quit") == 0) {
         *running = false;
         printf("\e[1;1H\e[2J");
@@ -98,11 +111,10 @@ int handle_cmd(char *cmd, bool *running) {
     } else {
         printf("INVALID COMMAND!\n\n");
     }
-
-    return 0;
+    return;
 }
 
-int main() {
+void main() {
     bool running = true;
     char cmd[20];
 
@@ -117,6 +129,6 @@ int main() {
         handle_cmd(cmd, &running);
     }
 
-    return 0;
+    return;
 }
 
