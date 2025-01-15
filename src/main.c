@@ -25,6 +25,8 @@ struct Target {
     int required_yaw;
     int impact_time;
     int difficulty;
+    int obscured_pitch;
+    int obscured_yaw;
 };
 struct Target* targets[MAX_TARGETS];
 
@@ -43,6 +45,27 @@ void create_target(int index, int required_pitch, int required_yaw, int impact_t
     return;
 }
 
+int obscure_target(int id) {
+    if (targets[id]->difficulty == 1) {
+        targets[id]->obscured_pitch = targets[id]->required_pitch + rand()%5+1;
+        targets[id]->obscured_yaw = targets[id]->required_yaw + rand()%5+1;
+    } else if (targets[id]->difficulty == 2) {
+        targets[id]->obscured_pitch = targets[id]->required_pitch + rand()%5+1;
+        int temp_pitch = targets[id]->obscured_pitch;
+        targets[id]->obscured_yaw = targets[id]->required_yaw + rand()%5+1;
+        int temp_yaw = targets[id]->obscured_yaw;
+
+        if (rand()%2 == 1) {
+            targets[id]->obscured_pitch = temp_yaw;
+            targets[id]->obscured_yaw = temp_pitch;
+        }
+    } else if (targets[id]->difficulty == 3) {
+    } else if (targets[id]->difficulty == 4) {
+    } else if (targets[id]->difficulty == 5) {
+    }
+
+}
+
 void create_new_random_target_set(int amount) {
     int i;
     for (i = 0; i<MAX_TARGETS; i++) {
@@ -53,6 +76,7 @@ void create_new_random_target_set(int amount) {
     current_targets = 0;
     for (i = 0; i<amount; i++) {
         create_target(i, rand()%361 - 180, rand()%361 - 180, rand()%40 + 10, rand()%5 + 1);
+        obscure_target(i);
     }
     return;
 }
@@ -63,6 +87,8 @@ void display_targets() {
         printf("TARGET %d:\n", i);
         printf("required pitch: %d\n", targets[i]->required_pitch);
         printf("required yaw: %d\n", targets[i]->required_yaw);
+        printf("obscured pitch: %d\n", targets[i]->obscured_pitch);
+        printf("obscured yaw: %d\n", targets[i]->obscured_yaw);
         printf("impact time: %d\n", targets[i]->impact_time);
         printf("difficulty: %d\n\n", targets[i]->difficulty);
     }
