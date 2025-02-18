@@ -45,25 +45,30 @@ void create_target(int index, int required_pitch, int required_yaw, int impact_t
     return;
 }
 
-int obscure_target(int id) {
-    if (targets[id]->difficulty == 1) {
-        targets[id]->obscured_pitch = targets[id]->required_pitch + rand()%5+1;
-        targets[id]->obscured_yaw = targets[id]->required_yaw + rand()%5+1;
-    } else if (targets[id]->difficulty == 2) {
-        targets[id]->obscured_pitch = targets[id]->required_pitch + rand()%5+1;
-        int temp_pitch = targets[id]->obscured_pitch;
-        targets[id]->obscured_yaw = targets[id]->required_yaw + rand()%5+1;
-        int temp_yaw = targets[id]->obscured_yaw;
-
-        if (rand()%2 == 1) {
-            targets[id]->obscured_pitch = temp_yaw;
-            targets[id]->obscured_yaw = temp_pitch;
-        }
-    } else if (targets[id]->difficulty == 3) {
-    } else if (targets[id]->difficulty == 4) {
-    } else if (targets[id]->difficulty == 5) {
+void obscure_target(int id) {
+    if (targets[id]->difficulty == 0) {
+        return;
     }
+    if (targets[id]->difficulty > 0) {
+        targets[id]->obscured_pitch = targets[id]->required_pitch + rand()%5+1;
+        targets[id]->obscured_yaw = targets[id]->required_yaw + rand()%5+1;
 
+        if (targets[id]->difficulty > 1) {
+            int temp_pitch = targets[id]->obscured_pitch;
+            int temp_yaw = targets[id]->obscured_yaw;
+        
+            if (rand()%3 == 1) {
+                targets[id]->obscured_pitch = temp_yaw;
+                targets[id]->obscured_yaw = temp_pitch;
+            }
+
+        if (targets[id]->difficulty == 3) {
+            if (targets[id]->difficulty == 4) {
+                
+                }
+            }
+        }
+    }
 }
 
 void create_new_random_target_set(int amount) {
@@ -75,13 +80,13 @@ void create_new_random_target_set(int amount) {
     }
     current_targets = 0;
     for (i = 0; i<amount; i++) {
-        create_target(i, rand()%361 - 180, rand()%361 - 180, rand()%40 + 10, rand()%5 + 1);
+        create_target(i, rand()%361 - 180, rand()%361 - 180, rand()%40 + 10, rand()%5);
         obscure_target(i);
     }
     return;
 }
 
-void display_targets() {
+void disp_targets() {
     int i;
     for (i = 0; i<current_targets; i++) {
         printf("TARGET %d:\n", i);
@@ -119,6 +124,7 @@ void disp_help() {
     printf(" info - displays important info\n");
     printf(" pitch - adjust cannon pitch\n");
     printf(" yaw - adjust cannon yaw\n");
+    printf(" targets - show all current targets\n");
     printf("\n");
     return;
 }
@@ -163,6 +169,8 @@ void handle_cmd(char *cmd, bool *running) {
         adjust_yaw();
     } else if(strcmp(cmd, "help") == 0) {
         disp_help();
+    } else if(strcmp(cmd, "targets") == 0) {
+        disp_targets();
     } else {
         printf("INVALID COMMAND!\n\n");
     }
@@ -176,7 +184,6 @@ void main() {
     srand(time(NULL));
     init(cycles);
     create_new_random_target_set(3);
-    display_targets();
 
     while(running) {
         if (cycles == DAY_CYCLES) {

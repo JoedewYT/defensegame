@@ -1,4 +1,4 @@
-# To-Do list for the game
+# To-Do List
 
 - [ ] Ammo/Ammo Management
 - [ ] Market
